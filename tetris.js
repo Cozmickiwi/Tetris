@@ -20,24 +20,46 @@ function game(){
     let i=0;
     let interval;
     window.addEventListener('keydown', event =>{
-        if(event.key == 'ArrowRight'){
-            for(let q = 0; q<line.length; q++){
-                document.getElementById(line[q]).style.backgroundColor = 'rgb(90, 90, 240)'
+        function horizMove() {
+            let prevMove = line.slice();
+            if(event.key == 'ArrowRight'){
+                for(let u = 0; u<line.length; u++){
+                    if(line[u] % 10 == 0){
+                        return;
+                    }
+                    else if(takenTiles.includes(line[u]+1)){
+                        return;
+                    }
+                }
+                for(let q = 0; q<line.length; q++){
+                    document.getElementById(line[q]).style.backgroundColor = 'rgb(90, 90, 240)'
+                }
+                for(let g = 0; g<line.length; g++){
+                    line[g] += 1;
+                    
+                    document.getElementById(line[g]).style.backgroundColor = 'red';
+                }
             }
-            for(let g = 0; g<line.length; g++){
-                line[g] += 1;
-                document.getElementById(line[g]).style.backgroundColor = 'red';
+            else if(event.key == 'ArrowLeft'){
+                for(let u = 0; u<line.length; u++){
+                    if((line[u]-1) % 10 == 0){
+                        return;
+                    }
+                    else if(takenTiles.includes(line[u]-1)){
+                        return;
+                    }
+                }
+                for(let q = 0; q<line.length; q++){
+                    document.getElementById(line[q]).style.backgroundColor = 'rgb(90, 90, 240)'
+                }
+                for(let g = 0; g<line.length; g++){
+                    line[g] -= 1;
+                    document.getElementById(line[g]).style.backgroundColor = 'red';
+                }
             }
+            
         }
-        else if(event.key == 'ArrowLeft'){
-            for(let q = 0; q<line.length; q++){
-                document.getElementById(line[q]).style.backgroundColor = 'rgb(90, 90, 240)'
-            }
-            for(let g = 0; g<line.length; g++){
-                line[g] -= 1;
-                document.getElementById(line[g]).style.backgroundColor = 'red';
-            }
-        }
+        horizMove();
     })
     interval = setInterval(() =>{
         shapeMove();
