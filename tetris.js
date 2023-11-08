@@ -14,8 +14,13 @@ gameGrid();
 
 
 function game(){
-    let line = [5, 15, 25, 35];
-    let square = [5, 6, 15, 16];
+    const line = [5, 15, 25, 35];
+    const square = [5, 6, 15, 16];
+    const jBlock = [5, 15, 24, 25];
+    const lBlock = [5, 15, 25, 26];
+    const sBlock = [5, 15, 16, 26];
+    const zBlock = [6, 15, 16, 25];
+    const tBlock = [5, 14, 15, 16];
     let shape = [5, 15, 25, 35];
     let takenTiles = [];
     let takenTilesCopy = [];
@@ -30,6 +35,7 @@ function game(){
     let ignoreRow;
     let dropCount = 0;
     let cont = true;
+    let curRotation = 1;
     window.addEventListener('keydown', event =>{
         function horizMove() {
             let prevMove = shape.slice();
@@ -89,6 +95,66 @@ function game(){
             else if(event.code == 'Space'){
                 debugger;
             }
+            else if(event.key == 'd'){
+                if(currentShape == 'line'){
+                    for(let i=0;i<4;i++){
+                        document.getElementById(shape[i]).style.backgroundColor = 'rgb(90, 90, 240)'
+                    }
+                    if(curRotation == 1){
+                        if(shape[0] % 10 == 0){
+                            shape[0] = shape[2]-3;
+                            shape[1] = shape[2]-2;
+                            shape[3] = shape[2];
+                            shape[2]--;
+                        }
+                        else if((shape[0]+1) % 10 == 0){
+                            shape[0] = shape[2]-2;
+                            shape[1] = shape[2]-1;
+                            shape[3] = shape[2]+1;
+                        }
+                        else if((shape[0]-1) % 10 == 0){
+                            shape[0] = shape[2]+3;
+                            shape[1] = shape[2]+2;
+                            shape[3] = shape[2];
+                            shape[2]++;
+                        }
+                        else if((shape[0]-2) % 10 == 0){
+                            shape[0] = shape[2]+2;
+                            shape[1] = shape[2]+1;
+                            shape[3] = shape[2]-1;
+                        }
+                        else{
+                            shape[0] = shape[2]-2;
+                            shape[1] = shape[2]-1;
+                            shape[3] = shape[2]+1;
+                        }
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 2;
+                    }
+                    
+                    else if(curRotation == 2){
+                        if((shape[2] + 20) <= 200 && !takenTiles.includes(shape[2] + 20)){
+                        shape[3] = shape[2]+10;
+                        shape[1] = shape[2]-10;
+                        shape[0] = shape[2]-20;
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 1;
+                        }
+                        else if((shape[2] + 20) >= 200 || takenTiles.includes(shape[2] + 20)){
+                            shape[3] = shape[2]-10;
+                            shape[1] = shape[2]-20;
+                            shape[0] = shape[2]-30;
+                            for(let i=0;i<4;i++){
+                                document.getElementById(shape[i]).style.backgroundColor = 'red';
+                            }
+                        }
+                    }
+                }
+            }
         }
         horizMove();
     });
@@ -98,11 +164,7 @@ function game(){
     function shapeMove () {
         i++
         let frame = i;
-        
-        
-        
         if(currentShape == 'line'){
-            
             if(frame < 5){
                 for(let x=0;x<frame;x++){
                     document.getElementById(shape[x]).style.backgroundColor = 'red';
@@ -110,7 +172,41 @@ function game(){
             }
         }
         else if(currentShape == 'square'){
-            
+            if(frame < 4){
+                for(let x=0;x<frame;x++){
+                    document.getElementById(shape[x]).style.backgroundColor = 'red';
+                }
+            }
+        }
+        else if(currentShape == 'jBlock'){
+            if(frame < 4){
+                for(let x=0;x<frame;x++){
+                    document.getElementById(shape[x]).style.backgroundColor = 'red';
+                }
+            }
+        }
+        else if(currentShape == 'lBlock'){
+            if(frame < 4){
+                for(let x=0;x<frame;x++){
+                    document.getElementById(shape[x]).style.backgroundColor = 'red';
+                }
+            }
+        }
+        else if(currentShape == 'sBlock'){
+            if(frame < 4){
+                for(let x=0;x<frame;x++){
+                    document.getElementById(shape[x]).style.backgroundColor = 'red';
+                }
+            }
+        }
+        else if(currentShape == 'zBlock'){
+            if(frame < 4){
+                for(let x=0;x<frame;x++){
+                    document.getElementById(shape[x]).style.backgroundColor = 'red';
+                }
+            }
+        }
+        else if(currentShape == 'tBlock'){
             if(frame < 3){
                 for(let x=0;x<frame;x++){
                     document.getElementById(shape[x]).style.backgroundColor = 'red';
@@ -160,7 +256,7 @@ function game(){
                         document.getElementById(r).style.backgroundColor = 'rgb(90, 90, 240)';
                     }
                     for(let f = 0; f<takenTiles.length; f++){
-                        if(takenTiles[f] <= (ignoreRow+1)){
+                        if(takenTiles[f] <= (ignoreRow) && (takenTiles[f] + dropCount <=200)){
                             takenTiles[f] += dropCount;
                         }
                     }
@@ -171,7 +267,7 @@ function game(){
             }
             console.log(takenTiles);
             //line = [5, 15, 25, 35];
-            let ranShape = Math.floor(Math.random() * 2);
+            let ranShape = Math.floor(Math.random() * 7);
             if(ranShape == 0){
                 currentShape = 'line';
                 shape = line.slice();
@@ -179,6 +275,26 @@ function game(){
             else if(ranShape == 1){
                 currentShape = 'square';
                 shape = square.slice();
+            }
+            else if(ranShape == 2){
+                currentShape = 'jBlock';
+                shape = jBlock.slice();
+            }
+            else if(ranShape == 3){
+                currentShape = 'lBlock';
+                shape = lBlock.slice();
+            }
+            else if(ranShape == 4){
+                currentShape = 'sBlock';
+                shape = sBlock.slice();
+            }
+            else if(ranShape == 5){
+                currentShape = 'zBlock';
+                shape = zBlock.slice();
+            }
+            else if(ranShape == 6){
+                currentShape = 'tBlock';
+                shape = tBlock.slice();
             }
             dropCount = 0;
             ignoreRow = undefined;
