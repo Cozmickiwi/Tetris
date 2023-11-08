@@ -19,6 +19,8 @@ function game(){
     let shapeSettled = false;
     let i=0;
     let interval;
+    let time = 500;
+    let downEventFired = false;
     window.addEventListener('keydown', event =>{
         function horizMove() {
             let prevMove = line.slice();
@@ -57,13 +59,30 @@ function game(){
                     document.getElementById(line[g]).style.backgroundColor = 'red';
                 }
             }
-            
+            else if(event.key == 'ArrowDown' && downEventFired == false){
+                downEventFired = true;
+                time = 50;
+                clearInterval(interval);
+                interval = setInterval(() =>{
+                    shapeMove();
+                }, time);
+                window.addEventListener('keyup', event => {
+                    if(event.key == 'ArrowDown'){
+                        downEventFired = false;
+                        time = 500;
+                        clearInterval(interval);
+                        interval = setInterval(() =>{
+                            shapeMove();
+                        }, time);
+                    }
+                })
+            }
         }
         horizMove();
     })
     interval = setInterval(() =>{
         shapeMove();
-    }, 500);
+    }, time);
     function shapeMove () {
         i++
         let frame = i;
