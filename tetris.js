@@ -8,11 +8,7 @@ function gameGrid(){
         gameBoard.appendChild(tile);
     }
 }
-
 gameGrid();
-
-
-
 function game(){
     const line = [5, 15, 25, 35];
     const square = [5, 6, 15, 16];
@@ -21,11 +17,13 @@ function game(){
     const sBlock = [5, 15, 16, 26];
     const zBlock = [6, 15, 16, 25];
     const tBlock = [5, 14, 15, 16];
-    let shape = [5, 15, 25, 35];
+    //let shape = [5, 15, 25, 35];
+    let shape = [5, 15, 24, 25];
     let takenTiles = [];
     let takenTilesCopy = [];
     let shapeHis = [];
-    let currentShape = 'line';
+    //let currentShape = 'line';
+    let currentShape = 'jBlock';
     let shapeSettled = false;
     let i=0;
     let interval;
@@ -135,6 +133,103 @@ function game(){
                     }
                     
                     else if(curRotation == 2){
+                        if((shape[2] + 20) <= 200 && !takenTiles.includes(shape[2] + 20)){
+                        shape[3] = shape[2]+10;
+                        shape[1] = shape[2]-10;
+                        shape[0] = shape[2]-20;
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 1;
+                        }
+                        else if((shape[2] + 20) >= 200 || takenTiles.includes(shape[2] + 20)){
+                            shape[3] = shape[2]-10;
+                            shape[1] = shape[2]-20;
+                            shape[0] = shape[2]-30;
+                            for(let i=0;i<4;i++){
+                                document.getElementById(shape[i]).style.backgroundColor = 'red';
+                            }
+                        }
+                    }
+                }
+                else if(currentShape == 'jBlock'){
+                    for(let i=0;i<4;i++){
+                        document.getElementById(shape[i]).style.backgroundColor = 'rgb(90, 90, 240)'
+                    }
+                    if(curRotation == 1){
+                        if(shape[0] % 10 == 0){
+                            shape[1] = shape[2]-1;
+                            shape[0] = shape[1]-10;
+                            shape[3] = shape[2]+1;
+                            //shape[2]--;
+                        }
+                        else if((shape[2]-1) % 10 == 0){
+                            shape[1] = shape[2];
+                            shape[0] = shape[1]-10;
+                            shape[3] = shape[2]+2;
+                            shape[2]++;
+                        }
+                        else{
+                            shape[1] = shape[2];
+                            shape[0] = shape[1]-10;
+                            shape[3] = shape[2]+2;
+                            shape[2]++;
+                        }
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 2;
+                    }
+                    else if(curRotation == 2){
+                        shape[0] = shape[2]-10;
+                        shape[1] = shape[0]+1;
+                        shape[3] = shape[2]+10;
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 3;
+                    }
+                    else if(curRotation == 3){
+                        if((shape[2]-1) % 10 == 0){
+                            if((shape[2] + 20) <= 200 && !takenTiles.includes(shape[2] + 20)){
+                            shape[0] = shape[2];
+                            shape[1] = shape[0]+1;
+                            shape[2] = shape[1]+1;
+                            shape[3] = shape[2]+10;
+                            }
+                            else if((shape[2] + 10) >= 200 || takenTiles.includes(shape[2] + 10)){
+                                console.log("NO")
+                            }
+                            else if((shape[2] + 20) >= 200 || takenTiles.includes(shape[2] + 20)){
+                                shape[0] = shape[2]-20;
+                                shape[1] = shape[0]-19;
+                                shape[2] = shape[1]-19;
+                                shape[3] = shape[2]-10;
+                            }
+                        }
+                        else{
+                            if((shape[2] + 20) <= 200 && !takenTiles.includes(shape[2] + 20)){
+                            shape[0] = shape[2]-1;
+                            shape[1] = shape[0]+1;
+                            shape[2] = shape[1]+1;
+                            shape[3] = shape[2]+10;
+                            }
+                            else if((shape[2] + 10) >= 200 || takenTiles.includes(shape[2] + 10)){
+                                console.log("NO")
+                            }
+                            else if((shape[2] + 20) >= 200 || takenTiles.includes(shape[2] + 20)){
+                                shape[0] = shape[2]-21;
+                                shape[1] = shape[0]-19;
+                                shape[2] = shape[1]-19;
+                                shape[3] = shape[2]-10;
+                            }
+                        }
+                        for(let i=0;i<4;i++){
+                            document.getElementById(shape[i]).style.backgroundColor = 'red';
+                        }
+                        curRotation = 4;
+                    }
+                    else if(curRotation == 4){
                         if((shape[2] + 20) <= 200 && !takenTiles.includes(shape[2] + 20)){
                         shape[3] = shape[2]+10;
                         shape[1] = shape[2]-10;
@@ -300,6 +395,7 @@ function game(){
             ignoreRow = undefined;
             i = 0;
             settled = false;
+            curRotation = 1;
             return;
         }
             document.getElementById(shape[j]).style.backgroundColor = 'red';
