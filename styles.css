@@ -10,7 +10,7 @@ body{
 .gameContainer{
     width: 650px;
     height: 700px;
-    background-color: black;
+    background-color: rgb(115, 120, 182);
     display: flex;
     justify-content: center;
     align-items: end;
@@ -29,8 +29,9 @@ body{
 .tile{
     width: 30px;
     height: 30px;
-    background-color: rgb(90, 90, 240);
-    outline: 1px solid black;
+    background-color: rgb(22, 22, 22);
+    outline: 1px solid black; 
+    box-sizing: border-box;
 }
 
 .rowClear{
@@ -50,6 +51,6 @@ body{
         background-color: white;
     }
     100%{
-        background-color: rgb(90, 90, 240);
+        background-color: rgb(22, 22, 22);
     }
 }
